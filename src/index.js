@@ -1,6 +1,6 @@
 const express = require('express');
 const expressSession = require('express-session');
-const expressHandlebars = require('express-handlebars');
+const hbs = require('express-handlebars');
 const cors = require('cors');
 const morgan = require('morgan');
 const methodOverride = require('method-override');
@@ -9,12 +9,13 @@ require('dotenv').config();
 
 //init 
 const app = express();
+const {routerAPI} = require('./routes');
 
 //settings
 app.set('port', require('./config/config').PORT || 4000);
 app.set('views', path.join(__dirname, '/views'));
-app.set('views', path.join(__dirname, '/public'));
-app.engine('.hbs', expressHandlebars.engine({
+app.set('public', path.join(__dirname, '/public'));
+app.engine('.hbs', hbs.engine({
 
     defaultLayout: 'main.hbs', 
     layoutsDir: path.join(app.get('views'), '/layouts'),
@@ -22,7 +23,7 @@ app.engine('.hbs', expressHandlebars.engine({
     extname: '.hbs'
 
 }));
-app.set('view engine'), 'hbs';
+app.set('view engine', 'hbs');
 
 //middlewares
 app.use(cors());
@@ -37,6 +38,7 @@ app.use(expressSession({
 app.use(methodOverride('_method'));
 
 //routes
+routerAPI(app);
 
 //public
 
